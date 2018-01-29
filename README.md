@@ -1,2 +1,2 @@
-# XGBOD
-Supplementary materials for XGBOD paper
+# XGBOD (Extreme Boosting Based Outlier Detection)
+Supplementary materials for XGBOD paper, including datasets, experiements, and charts
