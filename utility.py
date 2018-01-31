@@ -31,11 +31,10 @@ def precision_n(y_pred, y, n):
     return precision_score(y, y_n)
 
 
-def get_top_n(roc_list, feature_list, n, top=True):
+def get_top_n(roc_list, n, top=True):
     '''
     Accurate Selection
     :param roc_list:
-    :param feature_list:
     :param n:
     :param top:
     :return:

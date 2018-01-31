@@ -25,7 +25,7 @@ def knn(X, n_neighbors):
     return np.mean(res[0], axis=1), np.median(res[0], axis=1), res[0][:, -1]
 
 
-def generate_TOS_knn(X, y, k_list, feature_list):
+def get_TOS_knn(X, y, k_list, feature_list):
     knn_clf = ["knn_mean", "knn_median", "knn_kth"]
 
     result_knn = np.zeros([X.shape[0], len(k_list) * len(knn_clf)])
@@ -56,7 +56,7 @@ def generate_TOS_knn(X, y, k_list, feature_list):
     return feature_list, roc_knn, prec_knn, result_knn
 
 
-def generate_TOS_loop(X, y, k_list, feature_list):
+def get_TOS_loop(X, y, k_list, feature_list):
     # only compatible with pandas
     df_X = pd.DataFrame(X)
 
@@ -86,7 +86,7 @@ def generate_TOS_loop(X, y, k_list, feature_list):
     return feature_list, roc_loop, prec_loop, result_loop
 
 
-def generate_TOS_lof(X, y, k_list, feature_list):
+def get_TOS_lof(X, y, k_list, feature_list):
     result_lof = np.zeros([X.shape[0], len(k_list)])
     roc_lof = []
     prec_lof = []
@@ -114,7 +114,7 @@ def generate_TOS_lof(X, y, k_list, feature_list):
     return feature_list, roc_lof, prec_lof, result_lof
 
 
-def generate_TOS_svm(X, y, nu_list, feature_list):
+def get_TOS_svm(X, y, nu_list, feature_list):
     result_ocsvm = np.zeros([X.shape[0], len(nu_list)])
     roc_ocsvm = []
     prec_ocsvm = []
@@ -143,7 +143,7 @@ def generate_TOS_svm(X, y, nu_list, feature_list):
     return feature_list, roc_ocsvm, prec_ocsvm, result_ocsvm
 
 
-def generate_TOS_iforest(X, y, n_list, feature_list):
+def get_TOS_iforest(X, y, n_list, feature_list):
     result_if = np.zeros([X.shape[0], len(n_list)])
     roc_if = []
     prec_if = []
