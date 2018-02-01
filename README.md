@@ -1,6 +1,8 @@
 # XGBOD (Extreme Boosting Based Outlier Detection)
-### Supplementary materials are provided, including datasets, source codes and sample outputs.
-**Note: this is only a temporary site. May migrate to pemanent location later.**
+### Supplementary materials: datasets, source codes and sample outputs.
+**Note: this is only a temporary site. Move to a permanent location later.**
+
+Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *IJCNN '18*,  **Under Review**.  
 
 ##  Introduction
 XGBOD is a two-phase approach that uses unsupervised outlier detection algorithms to improve the data representation and then applies an XGBoost classifier to predict on the improved feature space. Experiments on five popular outlier benchmark datasets show that XGBOD could achieve better results than various the state-of-the-art methods.
