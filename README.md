@@ -2,12 +2,15 @@
 ### Supplementary materials: datasets, source codes and sample outputs.
 **Note: this is only a temporary site. Move to a permanent location later.**
 
-Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *IJCNN '18*,  **Under Review**.  
+Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *IJCNN '18*,  **Under Review**.
+
+------------
+
+
 
 ##  Introduction
-XGBOD is a two-phase approach that uses unsupervised outlier detection algorithms to improve the data representation and then applies an XGBoost classifier to predict on the improved feature space. Experiments on five popular outlier benchmark datasets show that XGBOD could achieve better results than various the state-of-the-art methods.
+XGBOD is a three-phase framework (see Figure below). In the first phase, it generates new data representations. Specifically, various unsupervised outlier detection methods are applied to the original data to get transformed outlier scores as new data representations. In the second phase, a selection process is performed on newly generated outlier scores to keep the useful ones. The selected outlier scores are then combined with the original features to become the new feature space. Finally, an XGBoost model is trained on the new feature space, and its output decides the outlier prediction result.
 
-A high-level flowchart is supplied below:
 ![XGBOD Flowchart](https://github.com/yzhao062/XGBOD/blob/master/figs/flowchart.png "XGBOD Flowchart")
 
 ## Dependency
@@ -15,7 +18,7 @@ The experiement codes are writted in Python 3 and built on a number of Python pa
 - imbalanced_learn==0.3.2
 - scipy==0.19.1
 - numpy==1.13.1
-- xgboost==0.6
+- xgboost==0.7
 - pandas==0.21.0
 - PyNomaly==0.1.7
 - imblearn==0.0
@@ -37,9 +40,9 @@ All datasets are accesible from http://odds.cs.stonybrook.edu/. Citation Suggest
 > Shebuti Rayana (2016).  ODDS Library [http://odds.cs.stonybrook.edu]. Stony Brook, NY: Stony Brook University, Department of Computer Science.
 
 ## Usage and Sample Output
-Experiments could be reproduced by running **xgbod.py**.
+Experiments could be reproduced by running **xgbod.py** directly. You could simply download/clone the entire repository and execute the code by "python xgbod.py".
 
-The first part of the code read in the data using Scipy. Then various TOS are built by seven different algorithms:
+The first part of the code read in the datasets using Scipy. Five public outlier datasets are supplied. Then various TOS are built by seven different algorithms:
 1. KNN 
 2. K-Median 
 3. AvgKNN 
@@ -47,29 +50,28 @@ The first part of the code read in the data using Scipy. Then various TOS are bu
 5. LoOP
 6. One-Class SVM 
 7. Isolation Forests
+**Please be noted that you could include more TOS**
 
 Taking KNN as an example, codes are as below:
 ```python
-# # Generate TOS using KNN based algorithms
-(feature_list, roc_knn, prec_knn, result_knn) = generate_TOS_knn(X_norm, y,
-                                                                 k_list,
-                                                                 feature_list)
+# Generate TOS using KNN based algorithms
+feature_list, roc_knn, prc_n_knn, result_knn = get_TOS_knn(X_norm, y, k_range,
+                                                                                               feature_list)
 ```
-Then three TOS selection methods are used to select *p* TOS:
+Then three TOS selection methods are used to select *p*  TOS:
 ```python
 
 p = 10  # number of selected TOS
 # random selection
 X_train_new_rand, X_train_all_rand = random_select(X, X_train_new_orig,
-                                                   roc_list, p)
+                                                                                    roc_list, p)
 # accurate selection
 X_train_new_accu, X_train_all_accu = accurate_select(X, X_train_new_orig,
-                                                     feature_list, roc_list, p)
+                                                                                     feature_list, roc_list, p)
 # balance selection
 X_train_new_bal, X_train_all_bal = balance_select(X, X_train_new_orig,
-                                                  roc_list, p)
+                                                                               roc_list, p)
 ```
-
 Finally, various classification methods are applied to the datasets:
 
 A sample output is provided below:
