@@ -13,6 +13,7 @@ from PyNomaly import loop
 def knn(X, n_neighbors):
     '''
     Utility function to return k-average, k-median, knn
+    Since these three functions are similar, so is inluded in the same func
     :param X: train data
     :param n_neighbors: number of neighbors
     :return:
@@ -42,17 +43,18 @@ def get_TOS_knn(X, y, k_list, feature_list):
             clf = knn_clf[j]
 
             roc = np.round(roc_auc_score(y, score_pred), decimals=4)
-            apc = np.round(average_precision_score(y, score_pred), decimals=4)
+            # apc = np.round(average_precision_score(y, score_pred), decimals=4)
             prec_n = np.round(
                 precision_n(y=y.ravel(), y_pred=score_pred, n=y.sum()),
                 decimals=4)
-            print('{clf} roc / apr / pren @ {k} is {roc} {apc} {pren}'.
-                  format(clf=clf, k=k, roc=roc, apc=apc, pren=prec_n))
+            print('{clf} @ {k} - ROC: {roc} Precision@n: {pren}'.
+                  format(clf=clf, k=k, roc=roc, pren=prec_n))
             feature_list.append(clf + str(k))
             roc_knn.append(roc)
             prec_knn.append(prec_n)
             result_knn[:, i * len(knn_result) + j] = score_pred
 
+    print()
     return feature_list, roc_knn, prec_knn, result_knn
 
 
@@ -70,19 +72,19 @@ def get_TOS_loop(X, y, k_list, feature_list):
         score_pred = clf.local_outlier_probabilities.astype(float)
 
         roc = np.round(roc_auc_score(y, score_pred), decimals=4)
-        apc = np.round(average_precision_score(y, score_pred), decimals=4)
+        # apc = np.round(average_precision_score(y, score_pred), decimals=4)
         prec_n = np.round(
             precision_n(y=y.ravel(), y_pred=score_pred, n=y.sum()), decimals=4)
-        print('loop roc / apr / pren @ {k} is {roc} {apc} {pren}'.format(k=k,
-                                                                         roc=roc,
-                                                                         apc=apc,
-                                                                         pren=prec_n))
+
+        print('LoOP @ {k} - ROC: {roc} Precision@n: {pren}'.format(k=k,
+                                                                   roc=roc,
+                                                                   pren=prec_n))
 
         feature_list.append('loop_' + str(k))
         roc_loop.append(roc)
         prec_loop.append(prec_n)
         result_loop[:, i] = score_pred
-
+    print()
     return feature_list, roc_loop, prec_loop, result_loop
 
 
@@ -98,19 +100,19 @@ def get_TOS_lof(X, y, k_list, feature_list):
         score_pred = clf.negative_outlier_factor_
 
         roc = np.round(roc_auc_score(y, score_pred * -1), decimals=4)
-        apc = np.round(average_precision_score(y, score_pred * -1), decimals=4)
+        # apc = np.round(average_precision_score(y, score_pred * -1), decimals=4)
         prec_n = np.round(
             precision_n(y=y.ravel(), y_pred=score_pred * -1, n=y.sum()),
             decimals=4)
-        print('lof roc / apr / pren @ {k} is {roc} {apc} {pren}'.format(k=k,
-                                                                        roc=roc,
-                                                                        apc=apc,
-                                                                        pren=prec_n))
+        print('LOF @ {k} - ROC: {roc} Precision@n: {pren}'.format(k=k,
+                                                                  roc=roc,
+                                                                  pren=prec_n))
+
         feature_list.append('lof_' + str(k))
         roc_lof.append(roc)
         prec_lof.append(prec_n)
         result_lof[:, i] = score_pred * -1
-
+    print()
     return feature_list, roc_lof, prec_lof, result_lof
 
 
@@ -127,19 +129,18 @@ def get_TOS_svm(X, y, nu_list, feature_list):
 
         roc = np.round(roc_auc_score(y, score_pred * -1), decimals=4)
 
-        apc = np.round(average_precision_score(y, score_pred * -1), decimals=4)
+        # apc = np.round(average_precision_score(y, score_pred * -1), decimals=4)
         prec_n = np.round(
             precision_n(y=y.ravel(), y_pred=(score_pred * -1).ravel(),
                         n=y.sum()), decimals=4)
-        print('svm roc / apr / pren @ {nu} is {roc} {apc} {pren}'.format(nu=nu,
-                                                                         roc=roc,
-                                                                         apc=apc,
-                                                                         pren=prec_n))
+        print('svm @ {nu} - ROC: {roc} Precision@n: {pren}'.format(nu=nu,
+                                                                   roc=roc,
+                                                                   pren=prec_n))
         feature_list.append('ocsvm_' + str(nu))
         roc_ocsvm.append(roc)
         prec_ocsvm.append(prec_n)
         result_ocsvm[:, i] = score_pred.reshape(score_pred.shape[0]) * -1
-
+    print()
     return feature_list, roc_ocsvm, prec_ocsvm, result_ocsvm
 
 
@@ -159,13 +160,14 @@ def get_TOS_iforest(X, y, n_list, feature_list):
         prec_n = np.round(
             precision_n(y=y.ravel(), y_pred=(score_pred * -1).ravel(),
                         n=y.sum()), decimals=4)
-        print('if roc / apr / pren @ {n} is {roc} {apc} {pren}'.format(n=n,
-                                                                       roc=roc,
-                                                                       apc=apc,
-                                                                       pren=prec_n))
+
+        print('Isolation Forest @ {n} - ROC: {roc} Precision@n: {pren}'.format(
+            n=n,
+            roc=roc,
+            pren=prec_n))
         feature_list.append('if_' + str(n))
         roc_if.append(roc)
         prec_if.append(prec_n)
         result_if[:, i] = score_pred.reshape(score_pred.shape[0]) * -1
-
+    print()
     return feature_list, roc_if, prec_if, result_if

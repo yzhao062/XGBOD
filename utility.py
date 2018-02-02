@@ -8,7 +8,7 @@ from sklearn.metrics import average_precision_score
 
 def precision_n(y_pred, y, n):
     '''
-    Utlity function to calculate precision @ n
+    Utlity function to calculate precision@n
 
     :param y_pred: predicted value
     :param y: ground truth
@@ -33,8 +33,8 @@ def precision_n(y_pred, y, n):
 
 def get_top_n(roc_list, n, top=True):
     '''
-    Accurate Selection
-    :param roc_list:
+    for use of Accurate Selection only
+    :param roc_list: a li
     :param n:
     :param top:
     :return:

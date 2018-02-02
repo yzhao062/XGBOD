@@ -1,10 +1,10 @@
+import os
 import random
 import scipy.io as scio
 import numpy as np
 
 from sklearn.preprocessing import normalize
 from sklearn.metrics import roc_auc_score
-from sklearn.metrics import average_precision_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
@@ -19,11 +19,12 @@ from generate_TOS import get_TOS_iforest
 from select_TOS import random_select, accurate_select, balance_select
 
 # load data file
-# mat = scio.loadmat('cardio.mat')
-mat = scio.loadmat('arrhythmia.mat')
-# mat = scio.loadmat('letter.mat')
-# mat = scio.loadmat('speech.mat')
-# mat = scio.loadmat('mammography.mat')
+# mat = scio.loadmat(os.path.join('datasets', 'cardio.mat'))
+mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
+# mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
+# mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
+# mat = scio.loadmat(os.path.join('datasets', 'mammography.mat'))
+
 
 X = mat['X']
 y = mat['y']
