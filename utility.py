@@ -62,8 +62,6 @@ def print_baseline(X_train_new_orig, y, roc_list, prec_list):
     X_train_all_norm_mean = np.mean(X_train_all_norm, axis=1)
 
     roc = np.round(roc_auc_score(y, X_train_all_norm_mean), decimals=4)
-    apc = np.round(average_precision_score(y, X_train_all_norm_mean),
-                   decimals=4)
     prec_n = np.round(
         precision_n(y=y.ravel(), y_pred=(X_train_all_norm_mean).ravel(),
                     n=y.sum()), decimals=4)

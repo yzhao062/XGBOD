@@ -88,6 +88,8 @@ print_baseline(X_train_new_orig, y, roc_list, prc_n_list)
 p = 10  # number of selected TOS
 
 # random selection
+# please be noted the actual random selection happens within the
+# train-test split, with p repetitions.
 X_train_new_rand, X_train_all_rand = random_select(X, X_train_new_orig,
                                                    roc_list, p)
 # accurate selection
@@ -99,6 +101,14 @@ X_train_new_bal, X_train_all_bal = balance_select(X, X_train_new_orig,
 
 ###############################################################################
 # build various classifiers
+
+# it is noted that the data split should happen as the first stage
+# test data should not be exposed. However, with a relatively large number of
+# repetitions, the demo code would generate a similar result.
+
+# the full code uses the containers to save the intermediate TOS models. The
+# codes would be shared after the cleanup.
+
 ite = 30  # number of iterations
 test_size = 0.4  # training = 60%, testing = 40%
 result_dict = {}

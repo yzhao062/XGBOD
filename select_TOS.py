@@ -10,7 +10,7 @@ def random_select(X, X_train_new_orig, roc_list, p):
     X_train_new_rand = X_train_new_orig[:, s_feature_rand]
     X_train_all_rand = np.concatenate((X, X_train_new_rand), axis=1)
 
-    print(s_feature_rand)
+    # print(s_feature_rand)
 
     return X_train_new_rand, X_train_all_rand
 
@@ -20,7 +20,7 @@ def accurate_select(X, X_train_new_orig, feature_list, roc_list, p):
     X_train_new_accu = X_train_new_orig[:, s_feature_accu[0][0:p]]
     X_train_all_accu = np.concatenate((X, X_train_new_accu), axis=1)
 
-    print(s_feature_accu)
+    # print(s_feature_accu)
 
     return X_train_new_accu, X_train_all_accu
 
@@ -52,6 +52,6 @@ def balance_select(X, X_train_new_orig, roc_list, p):
     X_train_new_balance = X_train_new_orig[:, s_feature_balance]
     X_train_all_balance = np.concatenate((X, X_train_new_balance), axis=1)
 
-    print(s_feature_balance)
+    # print(s_feature_balance)
 
     return X_train_new_balance, X_train_all_balance
