@@ -1,12 +1,16 @@
 # XGBOD (Extreme Boosting Based Outlier Detection)
-### Supplementary materials: datasets, source codes and sample outputs.
-**Note: this is only a temporary site. Move to a permanent location later.**
+### Supplementary materials: datasets, demo source codes and sample outputs.
 
 Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *IJCNN '18*,  **Under Review**.
 
 ------------
 
-
+Additional notes:
+1. This repository is **temporary**. Would move to a **permanent** location later.
+2. Codes are for **demo purpose only**. This demo codes are refactored for fast execution and reproduction as a proof of concept. The full codes will be released after the cleanup and optimization. In contrast to the demo version, the full version reserves the intermediate models to conduct feature engineering on testing data, which takes relatively long time to execute. However, the result difference is somehow neligible. However, it is noted users should not expose and use the testing data while building TOS. 
+3. It is understood that there are **small variations** in the results due to the random process, such as xgboost and Random TOS Selection.
+4. While running L1_Comb and L2_Comb, EasyEnsemble is used to construct balanced bags. It is noted the demo code uses 10 bags instead of 50, for executing efficiently. Despite, increasing to 50 bags would not change the result too much but just bring better stablity. You are welcomed to change "BalancedBaggingClassifier" parameter for using 50 bags. However, it is very slow and this is also one of the reasons why we propose XGBOD -- it is much more efficient:)
+------------
 
 ##  Introduction
 XGBOD is a three-phase framework (see Figure below). In the first phase, it generates new data representations. Specifically, various unsupervised outlier detection methods are applied to the original data to get transformed outlier scores as new data representations. In the second phase, a selection process is performed on newly generated outlier scores to keep the useful ones. The selected outlier scores are then combined with the original features to become the new feature space. Finally, an XGBoost model is trained on the new feature space, and its output decides the outlier prediction result.
@@ -55,27 +59,24 @@ The first part of the code read in the datasets using Scipy. Five public outlier
 Taking KNN as an example, codes are as below:
 ```python
 # Generate TOS using KNN based algorithms
-feature_list, roc_knn, prc_n_knn, result_knn = get_TOS_knn(X_norm, y, k_range,
-                                                                                               feature_list)
+feature_list, roc_knn, prc_n_knn, result_knn = get_TOS_knn(X_norm, y, k_range, feature_list)
 ```
 Then three TOS selection methods are used to select *p*  TOS:
 ```python
 
 p = 10  # number of selected TOS
 # random selection
-X_train_new_rand, X_train_all_rand = random_select(X, X_train_new_orig,
-                                                                                    roc_list, p)
+X_train_new_rand, X_train_all_rand = random_select(X, X_train_new_orig, roc_list, p)
 # accurate selection
-X_train_new_accu, X_train_all_accu = accurate_select(X, X_train_new_orig,
-                                                                                     feature_list, roc_list, p)
+X_train_new_accu, X_train_all_accu = accurate_select(X, X_train_new_orig, feature_list, roc_list, p)
 # balance selection
-X_train_new_bal, X_train_all_bal = balance_select(X, X_train_new_orig,
-                                                                               roc_list, p)
+X_train_new_bal, X_train_all_bal = balance_select(X, X_train_new_orig, roc_list, p)
 ```
 Finally, various classification methods are applied to the datasets:
 
-A sample output is provided below:
+Sample outputs are provided below:
 ![Sample Outputs on Arrhythmia](https://github.com/yzhao062/XGBOD/blob/master/figs/sample_outputs.png "Sample Outputs on Arrhythmia")
+![Sample Outputs on Arrhythmia2](https://github.com/yzhao062/XGBOD/blob/master/figs/results.png "Sample Outputs on Arrhythmia")
 
 ## Figures
 To finish
