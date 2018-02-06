@@ -1,3 +1,11 @@
+'''
+Demo codes for XGBOD.
+Author: Yue Zhao
+
+notes: the demo code simulates the use of XGBOD with some changes to expedite
+the execution. Use the full code for the production.
+
+'''
 import os
 import random
 import scipy.io as scio
@@ -19,17 +27,16 @@ from generate_TOS import get_TOS_iforest
 from select_TOS import random_select, accurate_select, balance_select
 
 # load data file
+# mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'cardio.mat'))
-mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
-# mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
+mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'mammography.mat'))
-
 
 X = mat['X']
 y = mat['y']
 
-# knn, LoOP, and LOF use normalized X
+# use unit norm vector X improves knn, LoOP, and LOF results
 X_norm = normalize(X)
 feature_list = []
 
