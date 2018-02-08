@@ -18,18 +18,19 @@ from sklearn.linear_model import LogisticRegression
 
 from xgboost.sklearn import XGBClassifier
 from imblearn.ensemble import BalancedBaggingClassifier
-from utility import precision_n, print_baseline
+from utility import get_precn, print_baseline
 from generate_TOS import get_TOS_knn
 from generate_TOS import get_TOS_loop
 from generate_TOS import get_TOS_lof
 from generate_TOS import get_TOS_svm
 from generate_TOS import get_TOS_iforest
 from select_TOS import random_select, accurate_select, balance_select
+from Glosh import Glosh
 
 # load data file
-# mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
+mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'cardio.mat'))
-mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
+# mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'mammography.mat'))
 
@@ -173,8 +174,7 @@ for i in range(ite):
         y_pred = clf.predict_proba(X_test_o)
 
         roc_score = roc_auc_score(y_test, y_pred[:, 1])
-        prec_n = precision_n(y=y_test.ravel(), y_pred=y_pred[:, 1],
-                             n=y_test.sum())
+        prec_n = get_precn(y_test, y_pred[:, 1])
 
         result_dict[clf_name + 'ROC' + 'o'].append(roc_score)
         result_dict[clf_name + 'PRC@n' + 'o'].append(prec_n)
@@ -184,8 +184,7 @@ for i in range(ite):
         y_pred = clf.predict_proba(X_test_n)
 
         roc_score = roc_auc_score(y_test, y_pred[:, 1])
-        prec_n = precision_n(y=y_test.ravel(), y_pred=y_pred[:, 1],
-                             n=y_test.sum())
+        prec_n = get_precn(y_test, y_pred[:, 1])
 
         result_dict[clf_name + 'ROC' + 'n'].append(roc_score)
         result_dict[clf_name + 'PRC@n' + 'n'].append(prec_n)
@@ -195,8 +194,7 @@ for i in range(ite):
         y_pred = clf.predict_proba(X_test)
 
         roc_score = roc_auc_score(y_test, y_pred[:, 1])
-        prec_n = precision_n(y=y_test.ravel(), y_pred=y_pred[:, 1],
-                             n=y_test.sum())
+        prec_n = get_precn(y_test, y_pred[:, 1])
 
         result_dict[clf_name + 'ROC' + 's'].append(roc_score)
         result_dict[clf_name + 'PRC@n' + 's'].append(prec_n)

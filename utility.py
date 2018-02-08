@@ -1,9 +1,23 @@
-import pandas as pd
 import numpy as np
+from scipy.stats import scoreatpercentile
 from sklearn.metrics import precision_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
-from sklearn.metrics import average_precision_score
+
+
+def get_precn(y, y_pred):
+    '''
+    Utlity function to calculate precision@n
+    :param y: ground truth
+    :param y_pred: number of outliers
+    :return: score
+    '''
+    # calculate the percentage of outliers
+    out_perc = np.count_nonzero(y) / len(y)
+
+    threshold = scoreatpercentile(y_pred, 100 * (1 - out_perc))
+    y_pred = (y_pred > threshold).astype('int')
+    return precision_score(y, y_pred)
 
 
 def precision_n(y_pred, y, n):
@@ -62,9 +76,7 @@ def print_baseline(X_train_new_orig, y, roc_list, prec_list):
     X_train_all_norm_mean = np.mean(X_train_all_norm, axis=1)
 
     roc = np.round(roc_auc_score(y, X_train_all_norm_mean), decimals=4)
-    prec_n = np.round(
-        precision_n(y=y.ravel(), y_pred=(X_train_all_norm_mean).ravel(),
-                    n=y.sum()), decimals=4)
+    prec_n = np.round(get_precn(y, X_train_all_norm_mean), decimals=4)
 
     print('Average TOS ROC:', roc)
     print('Average TOS Precision@n', prec_n)

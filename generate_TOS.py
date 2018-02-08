@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
-from utility import precision_n
+from utility import get_precn
 from sklearn.metrics import roc_auc_score
-from sklearn.metrics import average_precision_score
 from sklearn.neighbors import NearestNeighbors
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.svm import OneClassSVM
@@ -44,9 +43,7 @@ def get_TOS_knn(X, y, k_list, feature_list):
 
             roc = np.round(roc_auc_score(y, score_pred), decimals=4)
             # apc = np.round(average_precision_score(y, score_pred), decimals=4)
-            prec_n = np.round(
-                precision_n(y=y.ravel(), y_pred=score_pred, n=y.sum()),
-                decimals=4)
+            prec_n = np.round(get_precn(y, score_pred), decimals=4)
             print('{clf} @ {k} - ROC: {roc} Precision@n: {pren}'.
                   format(clf=clf, k=k, roc=roc, pren=prec_n))
             feature_list.append(clf + str(k))
@@ -73,8 +70,7 @@ def get_TOS_loop(X, y, k_list, feature_list):
 
         roc = np.round(roc_auc_score(y, score_pred), decimals=4)
         # apc = np.round(average_precision_score(y, score_pred), decimals=4)
-        prec_n = np.round(
-            precision_n(y=y.ravel(), y_pred=score_pred, n=y.sum()), decimals=4)
+        prec_n = np.round(get_precn(y, score_pred), decimals=4)
 
         print('LoOP @ {k} - ROC: {roc} Precision@n: {pren}'.format(k=k,
                                                                    roc=roc,
@@ -101,9 +97,7 @@ def get_TOS_lof(X, y, k_list, feature_list):
 
         roc = np.round(roc_auc_score(y, score_pred * -1), decimals=4)
         # apc = np.round(average_precision_score(y, score_pred * -1), decimals=4)
-        prec_n = np.round(
-            precision_n(y=y.ravel(), y_pred=score_pred * -1, n=y.sum()),
-            decimals=4)
+        prec_n = np.round(get_precn(y, score_pred * -1), decimals=4)
         print('LOF @ {k} - ROC: {roc} Precision@n: {pren}'.format(k=k,
                                                                   roc=roc,
                                                                   pren=prec_n))
@@ -131,8 +125,7 @@ def get_TOS_svm(X, y, nu_list, feature_list):
 
         # apc = np.round(average_precision_score(y, score_pred * -1), decimals=4)
         prec_n = np.round(
-            precision_n(y=y.ravel(), y_pred=(score_pred * -1).ravel(),
-                        n=y.sum()), decimals=4)
+            get_precn(y, score_pred * -1), decimals=4)
         print('svm @ {nu} - ROC: {roc} Precision@n: {pren}'.format(nu=nu,
                                                                    roc=roc,
                                                                    pren=prec_n))
@@ -156,10 +149,7 @@ def get_TOS_iforest(X, y, n_list, feature_list):
         score_pred = clf.decision_function(X)
 
         roc = np.round(roc_auc_score(y, score_pred * -1), decimals=4)
-        apc = np.round(average_precision_score(y, score_pred * -1), decimals=4)
-        prec_n = np.round(
-            precision_n(y=y.ravel(), y_pred=(score_pred * -1).ravel(),
-                        n=y.sum()), decimals=4)
+        prec_n = np.round(get_precn(y, y_pred=(score_pred * -1)), decimals=4)
 
         print('Isolation Forest @ {n} - ROC: {roc} Precision@n: {pren}'.format(
             n=n,
