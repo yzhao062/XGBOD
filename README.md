@@ -6,10 +6,11 @@ Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection wit
 ------------
 
 Additional notes:
-1. This repository is **temporary**. Would move to a **permanent** location later.
-2. Codes are for **demo purpose only**. This demo codes are refactored for fast execution and reproduction as a proof of concept. The full codes will be released after the cleanup and optimization. In contrast to the demo version, the full version reserves the intermediate models to conduct feature engineering on testing data, which takes relatively long time to execute. However, the result difference is somehow neligible. However, it is noted users should not expose and use the testing data while building TOS. 
-3. It is understood that there are **small variations** in the results due to the random process, such as xgboost and Random TOS Selection.
-4. While running L1_Comb and L2_Comb, EasyEnsemble is used to construct balanced bags. It is noted the demo code uses 10 bags instead of 50, for executing efficiently. Despite, increasing to 50 bags would not change the result too much but just bring better stablity. You are welcomed to change "BalancedBaggingClassifier" parameter for using 50 bags. However, it is very slow and this is also one of the reasons why we propose XGBOD -- it is much more efficient:)
+1. Two versions of codes are provided
+ 1. **Demo purpose version** (xgbod_demo.py) is refactored for fast execution and reproduction as a proof of concept. The key difference from the full version is TOS are built in once. It could be regarded as a static unsupervised engineering. However, it is noted users should not expose and use the testing data while building TOS in practice. 
+ 2.  **Full version** (xgbod_full.py)  is released after moderate cleanup and optimization. In contrast to the demo version, the full version reserves the intermediate models to conduct feature engineering on testing data, which takes relatively long time to execute. However, the result difference is somehow neligible. Extreme case it would take hours to finish one experiment. It should be further optimized for production. We suggest to using the demo version for playing with XGBOD, while the full version is being optimized.
+3. It is understood that there are **small variations** in the results due to the random process, such as xgboost and Random TOS Selection. Again, running demo code would only give you similar results but not the exact results.
+4. While running *L1_Comb* and *L2_Comb*, EasyEnsemble is used to construct balanced bags. It is noted the demo code uses 10 bags instead of 50, for executing efficiently. Despite, increasing to 50 bags would not change the result too much but just bring better stablity. You are welcomed to change "BalancedBaggingClassifier" parameter for using 50 bags. However, it is very slow and this is also one of the reasons why we propose XGBOD -- it is much more efficient:)
 ------------
 
 ##  Introduction
@@ -19,16 +20,22 @@ XGBOD is a three-phase framework (see Figure below). In the first phase, it gene
 
 ## Dependency
 The experiement codes are writted in Python 3 and built on a number of Python packages:
+- matplotlib==2.0.2
+- xgboost==0.7
+- pandas==0.21.0
 - imbalanced_learn==0.3.2
 - scipy==0.19.1
 - numpy==1.13.1
-- xgboost==0.7
-- pandas==0.21.0
 - PyNomaly==0.1.7
+- hdbscan==0.8.12
 - imblearn==0.0
 - scikit_learn==0.19.1
 
-Batch installation is possible with the supplied "requirements.txt"
+Batch installation is possible using the supplied "requirements.txt"
+
+------------
+
+
 ## Datasets
 Five datasets are used (see dataset folder):
 
@@ -43,8 +50,11 @@ Five datasets are used (see dataset folder):
 All datasets are accesible from http://odds.cs.stonybrook.edu/. Citation Suggestion for the datasets please refer to: 
 > Shebuti Rayana (2016).  ODDS Library [http://odds.cs.stonybrook.edu]. Stony Brook, NY: Stony Brook University, Department of Computer Science.
 
-## Usage and Sample Output
-Experiments could be reproduced by running **xgbod.py** directly. You could simply download/clone the entire repository and execute the code by "python xgbod.py".
+------------
+
+
+## Usage and Sample Output (Demo Version)
+Experiments could be reproduced by running **xgbod_demo.py** directly. You could simply download/clone the entire repository and execute the code by "python xgbod_demo.py".
 
 The first part of the code read in the datasets using Scipy. Five public outlier datasets are supplied. Then various TOS are built by seven different algorithms:
 1. KNN 
@@ -54,7 +64,7 @@ The first part of the code read in the datasets using Scipy. Five public outlier
 5. LoOP
 6. One-Class SVM 
 7. Isolation Forests
-**Please be noted that you could include more TOS**
+**Please be noted that you may include more TOS**
 
 Taking KNN as an example, codes are as below:
 ```python
