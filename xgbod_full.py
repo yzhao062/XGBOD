@@ -57,7 +57,8 @@ for clf_name in clf_name_list:
 
 for t in range(ite):
 
-    print('\nProcessing round', t, 'out of', ite)
+    print('\nProcessing round', t+1, 'out of', ite)
+
     # split X and y for training and validation
     X, X_test, y, y_test = train_test_split(X_orig, y_orig,
                                             test_size=test_size)

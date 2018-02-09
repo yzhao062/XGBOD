@@ -1,10 +1,10 @@
-numpy==1.13.1
-hdbscan==0.8.12
+matplotlib==2.0.2
+xgboost==0.7
 pandas==0.21.0
 imbalanced_learn==0.3.2
-xgboost==0.7
 scipy==0.19.1
-matplotlib==2.1.0
+numpy==1.13.1
 PyNomaly==0.1.7
+hdbscan==0.8.12
 imblearn==0.0
 scikit_learn==0.19.1
