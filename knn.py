@@ -1,6 +1,6 @@
 import numpy as np
-from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import NearestNeighbors
+from sklearn.neighbors import KDTree
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics import roc_auc_score
 from scipy.stats import scoreatpercentile
@@ -9,16 +9,17 @@ from utility import get_precn
 
 class Knn(object):
 
-    def __init__(self, n_neighbors=1, contamination=0.05, method='largest',
-                 normalization=False):
+    def __init__(self, n_neighbors=1, contamination=0.05, method='largest'):
         self.n_neighbors = n_neighbors
         self.contamination = contamination
         self.method = method
-        self.normalization = normalization
 
     def fit(self, X_train):
         self.X_train = X_train
         self._isfitted = True
+
+        self.distance = self.decision_scores()
+        self.tree = KDTree(X_train)
 
     def decision_scores(self):
 
@@ -26,11 +27,7 @@ class Knn(object):
             NotFittedError('Knn is not fitted yet')
 
         neigh = NearestNeighbors()
-        if self.normalization:
-            X_train_norm = StandardScaler().fit_transform(self.X_train)
-            neigh.fit(X_train_norm)
-        else:
-            neigh.fit(self.X_train)
+        neigh.fit(self.X_train)
 
         result = neigh.kneighbors(n_neighbors=self.n_neighbors,
                                   return_distance=True)
@@ -45,7 +42,10 @@ class Knn(object):
         elif self.method == 'median':
             dist = np.median(dist_arr, axis=1)
 
-        return dist
+        threshold = scoreatpercentile(dist, 100 * (1 - self.contamination))
+        self.threshold = threshold
+
+        return dist.ravel()
 
     def sample_scores(self, X_test):
 
@@ -56,23 +56,10 @@ class Knn(object):
 
         for i in range(X_test.shape[0]):
             x_i = X_test[i, :]
-
             x_i = np.asarray(x_i).reshape(1, x_i.shape[0])
-            x_comb = np.concatenate((self.X_train, x_i), axis=0)
 
-            neigh = NearestNeighbors()
-
-            if self.normalization:
-                x_comb_norm = StandardScaler().fit_transform(x_comb)
-                neigh.fit(x_comb_norm)
-            else:
-                neigh.fit(x_comb)
-
-            result = neigh.kneighbors(n_neighbors=self.n_neighbors,
-                                      return_distance=True)
-
-            dist_arr = result[0]
-            ind_arr = result[1]
+            # get the distance of the current point
+            dist_arr, ind_arr = self.tree.query(x_i, k=self.n_neighbors)
 
             if self.method == 'largest':
                 dist = dist_arr[:, -1]
@@ -82,8 +69,7 @@ class Knn(object):
                 dist = np.median(dist_arr, axis=1)
 
             pred_score_i = dist[-1]
-            threshold = scoreatpercentile(dist, 100 * (1 - self.contamination))
-            pred_label_i = (pred_score_i > threshold).astype('int')
+            pred_label_i = (pred_score_i > self.threshold).astype('int')
 
             # record the current item
             pred_score[i, :] = pred_score_i
@@ -104,8 +90,9 @@ class Knn(object):
         _, pred_label = self.sample_scores(X_test)
         return pred_label
 
-samples = [[-1, 0], [0., 0.], [1., 1], [2., 5.], [3, 1]]
-
-clf = Knn()
-clf.fit(samples)
-print(clf.sample_scores(np.asarray([[2,3], [6,8]])))
+##############################################################################
+# samples = [[-1, 0], [0., 0.], [1., 1], [2., 5.], [3, 1]]
+#
+# clf = Knn()
+# clf.fit(samples)
+# print(clf.sample_scores(np.asarray([[2, 3], [6, 8]])))
