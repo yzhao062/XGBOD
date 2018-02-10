@@ -1,31 +1,28 @@
 import os
 import pandas as pd
-import scipy.io as scio
 import numpy as np
-from sklearn.metrics import precision_score
+import scipy.io as scio
+
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from scipy.stats import scoreatpercentile
 from sklearn.metrics import roc_auc_score
-
 from sklearn.neighbors import LocalOutlierFactor
-
 from sklearn.linear_model import LogisticRegression
-from xgboost.sklearn import XGBClassifier
-
-from imblearn.ensemble import BalancedBaggingClassifier
 from sklearn.ensemble import IsolationForest
-
 from sklearn.svm import OneClassSVM
 
-from utility import get_top_n, get_precn, print_baseline
-from knn import Knn
+from xgboost.sklearn import XGBClassifier
+from imblearn.ensemble import BalancedBaggingClassifier
 from PyNomaly import loop
 
+from models.knn import Knn
+from models.utility import get_precn, print_baseline
+
 # load data file
-# mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
+# use one dataset at a time; more datasets could be added to /datasets folder
+mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'cardio.mat'))
-mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
+# mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'mammography.mat'))
 
@@ -38,12 +35,12 @@ y_orig = mat['y']
 # outlier percentage
 out_perc = np.count_nonzero(y_orig) / len(y_orig)
 
-# initialize the score
-result_dict = {}
-
 clf_list = [XGBClassifier(), LogisticRegression(penalty="l1"),
             LogisticRegression(penalty="l2")]
 clf_name_list = ['xgb', 'lr1', 'lr2']
+
+# initialize the container to store the results
+result_dict = {}
 
 # initialize the result dictionary
 for clf_name in clf_name_list:
@@ -57,7 +54,7 @@ for clf_name in clf_name_list:
 
 for t in range(ite):
 
-    print('\nProcessing round', t+1, 'out of', ite)
+    print('\nProcessing trial', t+1, 'out of', ite)
 
     # split X and y for training and validation
     X, X_test, y, y_test = train_test_split(X_orig, y_orig,
@@ -71,10 +68,9 @@ for t in range(ite):
     feature_list = []
 
     # predefined range of K
-    # trim the list
     k_list_pre = [1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90,
                   100, 150, 200, 250]
-
+    # trim the list in case of small sample size
     k_list = [k for k in k_list_pre if k < X.shape[0]]
 
     ###########################################################################
@@ -82,7 +78,7 @@ for t in range(ite):
     test_knn = np.zeros([X_test.shape[0], len(k_list)])
 
     roc_knn = []
-    prec_knn = []
+    prec_n_knn = []
 
     for i in range(len(k_list)):
         k = k_list[i]
@@ -99,7 +95,7 @@ for t in range(ite):
 
         feature_list.append('knn_' + str(k))
         roc_knn.append(roc)
-        prec_knn.append(prec_n)
+        prec_n_knn.append(prec_n)
 
         train_knn[:, i] = train_score
         test_knn[:, i] = pred_score.ravel()
@@ -109,7 +105,7 @@ for t in range(ite):
     test_knn_mean = np.zeros([X_test.shape[0], len(k_list)])
 
     roc_knn_mean = []
-    prec_knn_mean = []
+    prec_n_knn_mean = []
     for i in range(len(k_list)):
         k = k_list[i]
 
@@ -125,7 +121,7 @@ for t in range(ite):
 
         feature_list.append('knn_mean_' + str(k))
         roc_knn_mean.append(roc)
-        prec_knn_mean.append(prec_n)
+        prec_n_knn_mean.append(prec_n)
 
         train_knn_mean[:, i] = train_score
         test_knn_mean[:, i] = pred_score.ravel()
@@ -135,7 +131,7 @@ for t in range(ite):
     test_knn_median = np.zeros([X_test.shape[0], len(k_list)])
 
     roc_knn_median = []
-    prec_knn_median = []
+    prec_n_knn_median = []
     for i in range(len(k_list)):
         k = k_list[i]
 
@@ -151,7 +147,7 @@ for t in range(ite):
 
         feature_list.append('knn_median_' + str(k))
         roc_knn_median.append(roc)
-        prec_knn_median.append(prec_n)
+        prec_n_knn_median.append(prec_n)
 
         train_knn_median[:, i] = train_score
         test_knn_median[:, i] = pred_score.ravel()
@@ -161,7 +157,7 @@ for t in range(ite):
     test_lof = np.zeros([X_test.shape[0], len(k_list)])
 
     roc_lof = []
-    prec_lof = []
+    prec_n_lof = []
 
     for i in range(len(k_list)):
         k = k_list[i]
@@ -179,7 +175,7 @@ for t in range(ite):
                                                           pren=prec_n))
         feature_list.append('lof_' + str(k))
         roc_lof.append(roc)
-        prec_lof.append(prec_n)
+        prec_n_lof.append(prec_n)
 
         train_lof[:, i] = train_score
         test_lof[:, i] = pred_score
@@ -187,21 +183,21 @@ for t in range(ite):
     ###########################################################################
     # Noted that LoOP is not really used for prediction since its high
     # computational complexity
-    # However, it is included to demonstrate the effectiveness of XGBOD
+    # However, it is included to demonstrate the effectiveness of XGBOD only
 
     df_X = pd.DataFrame(np.concatenate([X, X_test], axis=0))
 
     # predefined range of K
-    k_list_pre = [1, 5, 10, 20]
+    k_list = [1, 5, 10, 20]
 
-    train_loop = np.zeros([X.shape[0], len(k_list_pre)])
-    test_loop = np.zeros([X_test.shape[0], len(k_list_pre)])
+    train_loop = np.zeros([X.shape[0], len(k_list)])
+    test_loop = np.zeros([X_test.shape[0], len(k_list)])
 
     roc_loop = []
-    prec_loop = []
+    prec_n_loop = []
 
-    for i in range(len(k_list_pre)):
-        k = k_list_pre[i]
+    for i in range(len(k_list)):
+        k = k_list[i]
         clf = loop.LocalOutlierProbability(df_X, n_neighbors=k).fit()
         score = clf.local_outlier_probabilities.astype(float)
 
@@ -216,7 +212,7 @@ for t in range(ite):
                                                            pren=prec_n))
         feature_list.append('loop_' + str(k))
         roc_loop.append(roc)
-        prec_loop.append(prec_n)
+        prec_n_loop.append(prec_n)
 
         train_loop[:, i] = train_score
         test_loop[:, i] = pred_score
@@ -228,7 +224,7 @@ for t in range(ite):
     test_svm = np.zeros([X_test.shape[0], len(nu_list)])
 
     roc_svm = []
-    prec_svm = []
+    prec_n_svm = []
 
     for i in range(len(nu_list)):
         nu = nu_list[i]
@@ -246,7 +242,7 @@ for t in range(ite):
 
         feature_list.append('svm_' + str(nu))
         roc_svm.append(roc)
-        prec_svm.append(prec_n)
+        prec_n_svm.append(prec_n)
 
         train_svm[:, i] = train_score.ravel()
         test_svm[:, i] = pred_score.ravel()
@@ -258,7 +254,7 @@ for t in range(ite):
     test_if = np.zeros([X_test.shape[0], len(n_list)])
 
     roc_if = []
-    prec_if = []
+    prec_n_if = []
 
     for i in range(len(n_list)):
         n = n_list[i]
@@ -274,7 +270,7 @@ for t in range(ite):
 
         feature_list.append('if_' + str(n))
         roc_if.append(roc)
-        prec_if.append(prec_n)
+        prec_n_if.append(prec_n)
 
         train_if[:, i] = train_score
         test_if[:, i] = pred_score
@@ -291,7 +287,7 @@ for t in range(ite):
     X_test_all = np.concatenate((X_test, X_test_new), axis=1)
 
     roc_list = roc_knn + roc_knn_mean + roc_knn_median + roc_lof + roc_loop + roc_svm + roc_if
-    prec_n_list = prec_knn + prec_knn_mean + prec_knn_median + prec_lof + prec_loop + prec_svm + prec_if
+    prec_n_list = prec_n_knn + prec_n_knn_mean + prec_n_knn_median + prec_n_lof + prec_n_loop + prec_n_svm + prec_n_if
 
     # get the results of baselines
     print_baseline(X_test_new, y_test, roc_list, prec_n_list)

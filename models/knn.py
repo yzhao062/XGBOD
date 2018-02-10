@@ -4,7 +4,7 @@ from sklearn.neighbors import KDTree
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics import roc_auc_score
 from scipy.stats import scoreatpercentile
-from utility import get_precn
+from models.utility import get_precn
 
 
 class Knn(object):

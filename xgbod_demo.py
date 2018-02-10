@@ -18,14 +18,13 @@ from sklearn.linear_model import LogisticRegression
 
 from xgboost.sklearn import XGBClassifier
 from imblearn.ensemble import BalancedBaggingClassifier
-from utility import get_precn, print_baseline
-from generate_TOS import get_TOS_knn
-from generate_TOS import get_TOS_loop
-from generate_TOS import get_TOS_lof
-from generate_TOS import get_TOS_svm
-from generate_TOS import get_TOS_iforest
-from select_TOS import random_select, accurate_select, balance_select
-from Glosh import Glosh
+from models.utility import get_precn, print_baseline
+from models.generate_TOS import get_TOS_knn
+from models.generate_TOS import get_TOS_loop
+from models.generate_TOS import get_TOS_lof
+from models.generate_TOS import get_TOS_svm
+from models.generate_TOS import get_TOS_iforest
+from models.select_TOS import random_select, accurate_select, balance_select
 
 # load data file
 mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))

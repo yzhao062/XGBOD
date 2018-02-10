@@ -1,8 +1,7 @@
-import pandas as pd
 import hdbscan
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from utility import get_precn
+from models.utility import get_precn
 
 
 class Glosh(object):
