@@ -6,10 +6,10 @@ Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection wit
 ------------
 
 Additional notes:
-1. Two versions of codes are provided
-   1. **Demo purpose version** (xgbod_demo.py) is refactored for fast execution and reproduction as a proof of concept. The key difference from the full version is TOS are built in once. It could be regarded as a static unsupervised engineering. However, it is noted users should not expose and use the testing data while building TOS in practice. 
-   2.  **Full version** (xgbod_full.py)  is released after moderate cleanup and optimization. In contrast to the demo version, the full version reserves the intermediate models to conduct feature engineering on testing data, which takes relatively long time to execute. However, the result difference is somehow neligible. Extreme case it would take hours to finish one experiment. It should be further optimized for production. We suggest to using the demo version for playing with XGBOD, while the full version is being optimized.
-3. It is understood that there are **small variations** in the results due to the random process, such as xgboost and Random TOS Selection. Again, running demo code would only give you similar results but not the exact results.
+1. Two versions of codes are provided:
+   1. **Demo purpose version** (xgbod_demo.py) is refactored for fast execution and reproduction as a proof of concept. The key difference from the full version is TOS are built in once for both training and test data. It could be regarded as a static unsupervised engineering. However, it is noted users should not expose and use the testing data while building TOS in practice. 
+   2.  **Full version** (xgbod_full.py)  is released after moderate code cleanup and optimization. In contrast to the demo version, the full version reserves the intermediate models to conduct feature engineering on testing data, which takes relatively long time to execute. However, the results are somehow close. Demo version should be sufficient to prove the idea. The full version would take hours to finish one experiements as it does not have appropriate optimization yet. It should be further optimized for production. We suggest to using the demo version while playing with XGBOD, during the full version is being optimized.
+3. It is understood that there are **small variations** in the results due to the random process, such as xgboost and Random TOS Selection. Again, running demo code would only give you similar results but not the exact results. Additionally, specific setups are slightly different for distinct datasets, which we have not published yet.
 4. While running *L1_Comb* and *L2_Comb*, EasyEnsemble is used to construct balanced bags. It is noted the demo code uses 10 bags instead of 50, for executing efficiently. Despite, increasing to 50 bags would not change the result too much but just bring better stablity. You are welcomed to change "BalancedBaggingClassifier" parameter for using 50 bags. However, it is very slow and this is also one of the reasons why we propose XGBOD -- it is much more efficient:)
 ------------
 
@@ -82,13 +82,12 @@ X_train_new_accu, X_train_all_accu = accurate_select(X, X_train_new_orig, featur
 # balance selection
 X_train_new_bal, X_train_all_bal = balance_select(X, X_train_new_orig, roc_list, p)
 ```
-Finally, various classification methods are applied to the datasets:
-
+Finally, various classification methods are applied to the datasets.
 Sample outputs are provided below:
 ![Sample Outputs on Arrhythmia](https://github.com/yzhao062/XGBOD/blob/master/figs/sample_outputs.png "Sample Outputs on Arrhythmia")
-![Sample Outputs on Arrhythmia2](https://github.com/yzhao062/XGBOD/blob/master/figs/results.png "Sample Outputs on Arrhythmia")
-
+------------
 ## Figures
-To finish
 
+Running **plots.py** would generate the figures for various TOS selection algorithms:
+![Sample Outputs on Arrhythmia2](https://github.com/yzhao062/XGBOD/blob/master/figs/results.png "Sample Outputs on Arrhythmia")
 
