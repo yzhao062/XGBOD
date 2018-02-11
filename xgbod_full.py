@@ -18,10 +18,12 @@ from PyNomaly import loop
 from models.knn import Knn
 from models.utility import get_precn, print_baseline
 
-# load data file
+
 # use one dataset at a time; more datasets could be added to /datasets folder
-# the experiement codes uses a bit more setting up, otherwise the
-# exact reproduction is infeasible. Cleane-up codes are going to be moved
+# the experiment codes use a bit more setting up, otherwise the
+# exact reproduction is infeasible. Clean-up codes are going to be moved
+
+# load data file
 mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
 
 
@@ -34,6 +36,7 @@ y_orig = mat['y']
 # outlier percentage
 out_perc = np.count_nonzero(y_orig) / len(y_orig)
 
+# define classifiers to use
 clf_list = [XGBClassifier(), LogisticRegression(penalty="l1"),
             LogisticRegression(penalty="l2")]
 clf_name_list = ['xgb', 'lr1', 'lr2']
