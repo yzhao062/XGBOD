@@ -15,7 +15,7 @@ def random_select(X, X_train_new_orig, roc_list, p):
     return X_train_new_rand, X_train_all_rand
 
 
-def accurate_select(X, X_train_new_orig, feature_list, roc_list, p):
+def accurate_select(X, X_train_new_orig, roc_list, p):
     s_feature_accu = get_top_n(roc_list=roc_list, n=p, top=True)
     X_train_new_accu = X_train_new_orig[:, s_feature_accu[0][0:p]]
     X_train_all_accu = np.concatenate((X, X_train_new_accu), axis=1)

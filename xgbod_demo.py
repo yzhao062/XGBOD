@@ -11,7 +11,7 @@ import random
 import scipy.io as scio
 import numpy as np
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, normalize
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -27,10 +27,10 @@ from models.generate_TOS import get_TOS_iforest
 from models.select_TOS import random_select, accurate_select, balance_select
 
 # load data file
+# mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
 mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'cardio.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
-# mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'mammography.mat'))
 
 X = mat['X']
@@ -38,7 +38,8 @@ y = mat['y']
 
 # use unit norm vector X improves knn, LoOP, and LOF results
 scaler = StandardScaler().fit(X)
-X_norm = scaler.transform(X)
+# X_norm = scaler.transform(X)
+X_norm = normalize(X)
 feature_list = []
 
 # Running KNN-base algorithms to generate addtional features
@@ -60,14 +61,14 @@ n_range = [10, 20, 50, 70, 100, 150, 200, 250]
 ##############################################################################
 
 # Generate TOS using KNN based algorithms
-feature_list, roc_knn, prc_n_knn, result_knn = get_TOS_knn(X, y, k_range,
+feature_list, roc_knn, prc_n_knn, result_knn = get_TOS_knn(X_norm, y, k_range,
                                                            feature_list)
 # Generate TOS using LoOP
 feature_list, roc_loop, prc_n_loop, result_loop = get_TOS_loop(X, y,
                                                                k_range_short,
                                                                feature_list)
 # Generate TOS using LOF
-feature_list, roc_lof, prc_n_lof, result_lof = get_TOS_lof(X, y, k_range,
+feature_list, roc_lof, prc_n_lof, result_lof = get_TOS_lof(X_norm, y, k_range,
                                                            feature_list)
 # Generate TOS using one class svm
 feature_list, roc_ocsvm, prc_n_ocsvm, result_ocsvm = get_TOS_svm(X, y,
@@ -102,7 +103,7 @@ X_train_new_rand, X_train_all_rand = random_select(X, X_train_new_orig,
                                                    roc_list, p)
 # accurate selection
 X_train_new_accu, X_train_all_accu = accurate_select(X, X_train_new_orig,
-                                                     feature_list, roc_list, p)
+                                                     roc_list, p)
 # balance selection
 X_train_new_bal, X_train_all_bal = balance_select(X, X_train_new_orig,
                                                   roc_list, p)

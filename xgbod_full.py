@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import scipy.io as scio
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, Normalizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 from sklearn.neighbors import LocalOutlierFactor
@@ -25,8 +25,6 @@ from models.utility import get_precn, print_baseline
 
 # load data file
 mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
-
-
 ite = 30  # number of iterations
 test_size = 0.4  # training = 60%, testing = 40%
 
@@ -63,7 +61,7 @@ for t in range(ite):
                                             test_size=test_size)
 
     # reserve the normalized data
-    scaler = StandardScaler().fit(X)
+    scaler = Normalizer().fit(X)
     X_norm = scaler.transform(X)
     X_test_norm = scaler.transform(X_test)
 
@@ -86,9 +84,9 @@ for t in range(ite):
         k = k_list[i]
 
         clf = Knn(n_neighbors=k, contamination=out_perc, method='largest')
-        clf.fit(X)
+        clf.fit(X_norm)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test)
+        pred_score, _ = clf.sample_scores(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -112,9 +110,9 @@ for t in range(ite):
         k = k_list[i]
 
         clf = Knn(n_neighbors=k, contamination=out_perc, method='mean')
-        clf.fit(X)
+        clf.fit(X_norm)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test)
+        pred_score, _ = clf.sample_scores(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -138,9 +136,9 @@ for t in range(ite):
         k = k_list[i]
 
         clf = Knn(n_neighbors=k, contamination=out_perc, method='median')
-        clf.fit(X)
+        clf.fit(X_norm)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test)
+        pred_score, _ = clf.sample_scores(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -164,12 +162,12 @@ for t in range(ite):
     for i in range(len(k_list)):
         k = k_list[i]
         clf = LocalOutlierFactor(n_neighbors=k)
-        clf.fit(X)
+        clf.fit(X_norm)
 
         # save the train sets
         train_score = clf.negative_outlier_factor_ * -1
         # flip the score
-        pred_score = clf._decision_function(X_test) * -1
+        pred_score = clf._decision_function(X_test_norm) * -1
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -187,7 +185,7 @@ for t in range(ite):
     # computational complexity
     # However, it is included to demonstrate the effectiveness of XGBOD only
 
-    df_X = pd.DataFrame(np.concatenate([X, X_test], axis=0))
+    df_X = pd.DataFrame(np.concatenate([X_norm, X_test_norm], axis=0))
 
     # predefined range of K
     k_list = [1, 5, 10, 20]
@@ -293,6 +291,12 @@ for t in range(ite):
 
     # get the results of baselines
     print_baseline(X_test_new, y_test, roc_list, prec_n_list)
+
+    ###########################################################################
+    # select TOS using different methods
+
+    p = 10  # number of selected TOS
+    #TODO: supplement the cleaned up version for selection methods
 
     ##############################################################################
     for clf, clf_name in zip(clf_list, clf_name_list):
