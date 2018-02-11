@@ -20,11 +20,10 @@ from models.utility import get_precn, print_baseline
 
 # load data file
 # use one dataset at a time; more datasets could be added to /datasets folder
-mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
-# mat = scio.loadmat(os.path.join('datasets', 'cardio.mat'))
-# mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
-# mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
-# mat = scio.loadmat(os.path.join('datasets', 'mammography.mat'))
+# the experiement codes uses a bit more setting up, otherwise the
+# exact reproduction is infeasible. Cleane-up codes are going to be moved
+mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
+
 
 ite = 30  # number of iterations
 test_size = 0.4  # training = 60%, testing = 40%
