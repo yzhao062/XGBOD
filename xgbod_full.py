@@ -54,7 +54,7 @@ for clf_name in clf_name_list:
 
 for t in range(ite):
 
-    print('\nProcessing trial', t+1, 'out of', ite)
+    print('\nProcessing trial', t + 1, 'out of', ite)
 
     # split X and y for training and validation
     X, X_test, y, y_test = train_test_split(X_orig, y_orig,
@@ -86,7 +86,7 @@ for t in range(ite):
         clf = Knn(n_neighbors=k, contamination=out_perc, method='largest')
         clf.fit(X)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test)
+        pred_score = clf.sample_scores(X_test)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -112,7 +112,7 @@ for t in range(ite):
         clf = Knn(n_neighbors=k, contamination=out_perc, method='mean')
         clf.fit(X)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test)
+        pred_score = clf.sample_scores(X_test)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -138,7 +138,7 @@ for t in range(ite):
         clf = Knn(n_neighbors=k, contamination=out_perc, method='median')
         clf.fit(X)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test)
+        pred_score = clf.sample_scores(X_test)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)

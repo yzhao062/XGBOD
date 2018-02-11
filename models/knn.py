@@ -8,6 +8,10 @@ from models.utility import get_precn
 
 
 class Knn(object):
+    '''
+    Knn class for outlier detection
+    support original knn, average knn, and median knn
+    '''
 
     def __init__(self, n_neighbors=1, contamination=0.05, method='largest'):
         self.n_neighbors = n_neighbors
@@ -51,8 +55,6 @@ class Knn(object):
 
         # initialize the output score
         pred_score = np.zeros([X_test.shape[0], 1])
-        # initialize the output label
-        pred_label = np.zeros([X_test.shape[0], 1])
 
         for i in range(X_test.shape[0]):
             x_i = X_test[i, :]
@@ -69,16 +71,14 @@ class Knn(object):
                 dist = np.median(dist_arr, axis=1)
 
             pred_score_i = dist[-1]
-            pred_label_i = (pred_score_i > self.threshold).astype('int')
 
             # record the current item
             pred_score[i, :] = pred_score_i
-            pred_label[i, :] = pred_label_i
 
-        return pred_score, pred_label
+        return pred_score
 
     def evaluate(self, X_test, y_test):
-        pred_score, _ = self.sample_scores(X_test)
+        pred_score = self.sample_scores(X_test)
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
 
@@ -87,8 +87,8 @@ class Knn(object):
 
     def predict(self, X_test):
 
-        _, pred_label = self.sample_scores(X_test)
-        return pred_label
+        pred_score = self.sample_scores(X_test)
+        return (pred_score > self.threshold).astype('int')
 
 ##############################################################################
 # samples = [[-1, 0], [0., 0.], [1., 1], [2., 5.], [3, 1]]
