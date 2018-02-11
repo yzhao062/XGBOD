@@ -18,7 +18,6 @@ from PyNomaly import loop
 from models.knn import Knn
 from models.utility import get_precn, print_baseline
 
-
 # use one dataset at a time; more datasets could be added to /datasets folder
 # the experiment codes use a bit more setting up, otherwise the
 # exact reproduction is infeasible. Clean-up codes are going to be moved
@@ -54,7 +53,7 @@ for clf_name in clf_name_list:
 
 for t in range(ite):
 
-    print('\nProcessing trial', t+1, 'out of', ite)
+    print('\nProcessing trial', t + 1, 'out of', ite)
 
     # split X and y for training and validation
     X, X_test, y, y_test = train_test_split(X_orig, y_orig,
@@ -86,7 +85,7 @@ for t in range(ite):
         clf = Knn(n_neighbors=k, contamination=out_perc, method='largest')
         clf.fit(X_norm)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test_norm)
+        pred_score = clf.sample_scores(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -112,7 +111,7 @@ for t in range(ite):
         clf = Knn(n_neighbors=k, contamination=out_perc, method='mean')
         clf.fit(X_norm)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test_norm)
+        pred_score = clf.sample_scores(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -138,7 +137,7 @@ for t in range(ite):
         clf = Knn(n_neighbors=k, contamination=out_perc, method='median')
         clf.fit(X_norm)
         train_score = clf.decision_scores()
-        pred_score, _ = clf.sample_scores(X_test_norm)
+        pred_score = clf.sample_scores(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -296,7 +295,7 @@ for t in range(ite):
     # select TOS using different methods
 
     p = 10  # number of selected TOS
-    #TODO: supplement the cleaned up version for selection methods
+    # TODO: supplement the cleaned up version for selection methods
 
     ##############################################################################
     for clf, clf_name in zip(clf_list, clf_name_list):
