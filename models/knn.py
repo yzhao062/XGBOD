@@ -37,7 +37,8 @@ class Knn(object):
                                   return_distance=True)
 
         dist_arr = result[0]
-        ind_array = result[1]
+        # unused. To delete
+        #ind_array = result[1]
 
         if self.method == 'largest':
             dist = dist_arr[:, -1]

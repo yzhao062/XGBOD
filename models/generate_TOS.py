@@ -7,6 +7,7 @@ from sklearn.neighbors import LocalOutlierFactor
 from sklearn.svm import OneClassSVM
 from sklearn.ensemble import IsolationForest
 from PyNomaly import loop
+from models.hbos import Hbos
 
 
 def knn(X, n_neighbors):
@@ -108,6 +109,33 @@ def get_TOS_lof(X, y, k_list, feature_list):
         result_lof[:, i] = score_pred * -1
     print()
     return feature_list, roc_lof, prec_lof, result_lof
+
+
+def get_TOS_hbos(X, y, k_list, feature_list):
+    result_hbos = np.zeros([X.shape[0], len(k_list)])
+    roc_hbos = []
+    prec_hbos = []
+
+    k_list = [3, 5, 7, 9, 12, 15, 20, 25, 30, 50]
+    for i in range(len(k_list)):
+        k = k_list[i]
+        clf = Hbos(bins=k, alpha=0.3)
+        clf.fit(X)
+        score_pred = clf.decision_scores
+
+        roc = np.round(roc_auc_score(y, score_pred), decimals=4)
+        # apc = np.round(average_precision_score(y, score_pred * -1), decimals=4)
+        prec_n = np.round(get_precn(y, score_pred), decimals=4)
+        print('HBOS @ {k} - ROC: {roc} Precision@n: {pren}'.format(k=k,
+                                                                   roc=roc,
+                                                                   pren=prec_n))
+
+        feature_list.append('hbos_' + str(k))
+        roc_hbos.append(roc)
+        prec_hbos.append(prec_n)
+        result_hbos[:, i] = score_pred
+    print()
+    return feature_list, roc_hbos, prec_hbos, result_hbos
 
 
 def get_TOS_svm(X, y, nu_list, feature_list):

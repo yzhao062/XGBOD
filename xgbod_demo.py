@@ -24,13 +24,14 @@ from models.generate_TOS import get_TOS_loop
 from models.generate_TOS import get_TOS_lof
 from models.generate_TOS import get_TOS_svm
 from models.generate_TOS import get_TOS_iforest
+from models.generate_TOS import get_TOS_hbos
 from models.select_TOS import random_select, accurate_select, balance_select
 
 # load data file
 # mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
-mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
+# mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'cardio.mat'))
-# mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
+mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'mammography.mat'))
 
 X = mat['X']
@@ -76,6 +77,10 @@ feature_list, roc_ocsvm, prc_n_ocsvm, result_ocsvm = get_TOS_svm(X, y,
                                                                  feature_list)
 # Generate TOS using isolation forests
 feature_list, roc_if, prc_n_if, result_if = get_TOS_iforest(X, y, n_range,
+                                                            feature_list)
+
+# Generate TOS using isolation forests
+feature_list, roc_hbos, prc_n_hbos, result_hbos = get_TOS_hbos(X, y, k_range,
                                                             feature_list)
 ##############################################################################
 # combine the feature space by concanating various TOS
