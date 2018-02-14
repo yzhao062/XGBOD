@@ -84,8 +84,8 @@ for t in range(ite):
 
         clf = Knn(n_neighbors=k, contamination=out_perc, method='largest')
         clf.fit(X_norm)
-        train_score = clf.decision_scores()
-        pred_score = clf.sample_scores(X_test_norm)
+        train_score = clf.decision_scores
+        pred_score = clf.decision_function(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -110,8 +110,8 @@ for t in range(ite):
 
         clf = Knn(n_neighbors=k, contamination=out_perc, method='mean')
         clf.fit(X_norm)
-        train_score = clf.decision_scores()
-        pred_score = clf.sample_scores(X_test_norm)
+        train_score = clf.decision_scores
+        pred_score = clf.decision_function(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
@@ -136,8 +136,8 @@ for t in range(ite):
 
         clf = Knn(n_neighbors=k, contamination=out_perc, method='median')
         clf.fit(X_norm)
-        train_score = clf.decision_scores()
-        pred_score = clf.sample_scores(X_test_norm)
+        train_score = clf.decision_scores
+        pred_score = clf.decision_function(X_test_norm)
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
         prec_n = np.round(get_precn(y_test, pred_score), decimals=4)
