@@ -259,7 +259,7 @@ for t in range(ite):
         n = n_list[i]
         clf = IsolationForest(n_estimators=n)
         clf.fit(X)
-        train_score = clf.decision_function(X)
+        train_score = clf.decision_function(X) * -1
         pred_score = clf.decision_function(X_test) * -1
 
         roc = np.round(roc_auc_score(y_test, pred_score), decimals=4)
