@@ -1,7 +1,7 @@
 # XGBOD (Extreme Boosting Based Outlier Detection)
 ### Supplementary materials: datasets, demo source codes and sample outputs.
 
-Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *IJCNN '18*,  **Under Review**.
+Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *International Joint Conference on Neural Networks (IJCNN)*, IEEE, 2018. **Accepted, to appear**.
 
 ------------
 
