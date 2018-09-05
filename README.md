@@ -2,7 +2,8 @@
 ### Supplementary materials: datasets, demo source codes and sample outputs.
 
 Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *International Joint Conference on Neural Networks (IJCNN)*, IEEE, 2018. **Accepted, to appear**.
-
+[PDF](https://www.cs.toronto.edu/~yuezhao/edited_XGBOD.pdf) | 
+[Presentation Slides](https://www.cs.toronto.edu/~yuezhao/IJCNN2018-XGBOD-56x7.pdf)
 ------------
 
 Additional notes:

@@ -29,9 +29,9 @@ from models.select_TOS import random_select, accurate_select, balance_select
 
 # load data file
 # mat = scio.loadmat(os.path.join('datasets', 'speech.mat'))
-# mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
+mat = scio.loadmat(os.path.join('datasets', 'arrhythmia.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'cardio.mat'))
-mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
+# mat = scio.loadmat(os.path.join('datasets', 'letter.mat'))
 # mat = scio.loadmat(os.path.join('datasets', 'mammography.mat'))
 
 X = mat['X']
