@@ -5,6 +5,7 @@ Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection wit
 
 [PDF](https://www.cs.toronto.edu/~yuezhao/s/edited_XGBOD.pdf) | 
 [Presentation Slides](https://www.cs.toronto.edu/~yuezhao/s/IJCNN2018-XGBOD-56x7.pdf)
+
 ------------
 
 Additional notes:
