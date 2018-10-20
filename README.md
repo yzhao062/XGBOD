@@ -1,10 +1,11 @@
 # XGBOD (Extreme Boosting Based Outlier Detection)
 ### Supplementary materials: datasets, demo source codes and sample outputs.
 
-Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *International Joint Conference on Neural Networks (IJCNN)*, IEEE, 2018. **Accepted, to appear**.
+Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *International Joint Conference on Neural Networks (IJCNN)*, IEEE, 2018.
 
 [PDF](https://www.cs.toronto.edu/~yuezhao/s/edited_XGBOD.pdf) | 
 [Presentation Slides](https://www.cs.toronto.edu/~yuezhao/s/IJCNN2018-XGBOD-56x7.pdf)
+[IEEE Explore](https://ieeexplore.ieee.org/document/8489605)
 
 ------------
 
@@ -30,7 +31,6 @@ The experiement codes are writted in Python 3 and built on a number of Python pa
 - scipy==0.19.1
 - numpy==1.13.1
 - PyNomaly==0.1.7
-- hdbscan==0.8.12
 - imblearn==0.0
 - scikit_learn==0.19.1
 
@@ -40,15 +40,17 @@ Batch installation is possible using the supplied "requirements.txt"
 
 
 ## Datasets
-Five datasets are used (see dataset folder):
+Seven datasets are used (see dataset folder):
 
 |  Datasets | Dimension  | Sample Size  | Number of Outliers  |
-| ------------ | ------------ | ------------ | ------------ |
-| Arrhythmia  | 351  | 274  | 126 (36%)  |
-|  Letter | 1600  | 32  | 100 (6.25%)  |
-|  Cardio | 1831  | 21  | 176 (9.6%)  |
-|  Speech | 3686  | 600  | 61(1.65%)  |
-|  Mammography | 11863  | 6  | 260 (2.32%)  |
+| --------- | -----------| ------------ | ------------------- |
+| Arrhythmia  | 351    | 274  | 126 (36%)    |
+|  Letter     | 1600   | 32   | 100 (6.25%)  |
+|  Cardio     | 1831   | 21   | 176 (9.6%)   |
+|  Speech     | 3686   | 600  | 61(1.65%)    |
+|  Satellite  | 6435   | 36   | 2036 (31.64%)|
+|  Mnist      | 7603   | 100  | 700 (9.21%)  |
+|  Mammography| 11863  | 6    | 260 (2.32%)  |
 
 All datasets are accesible from http://odds.cs.stonybrook.edu/. Citation Suggestion for the datasets please refer to: 
 > Shebuti Rayana (2016).  ODDS Library [http://odds.cs.stonybrook.edu]. Stony Brook, NY: Stony Brook University, Department of Computer Science.
