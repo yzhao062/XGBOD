@@ -17,15 +17,14 @@ Please cite the paper as:
 
 [PDF](https://www.cs.toronto.edu/~yuezhao/s/edited_XGBOD.pdf) | 
 [Presentation Slides](https://www.cs.toronto.edu/~yuezhao/s/IJCNN2018-XGBOD-56x7.pdf) |
-[IEEE Explore](https://ieeexplore.ieee.org/document/8489605)
+[IEEE Explore](https://ieeexplore.ieee.org/document/8489605) | 
 [API Documentation](https://pyod.readthedocs.io/en/latest/pyod.models.html#module-pyod.models.xgbod) | 
 [Example with PyOD](https://github.com/yzhao062/pyod/blob/master/examples/xgbod_example.py) 
 
 
 **Update** (Dec 25th, 2018): XGBOD has been officially released in **[Python Outlier Detection (PyOD)](https://github.com/yzhao062/pyod)** V0.6.6.
 
-**Update** (Dec 6th, 2018): XGBOD has been implemented in **[Python Outlier Detection (PyOD)](https://github.com/yzhao062/pyod)**, 
-pending to be released in pyod V0.6.6.
+**Update** (Dec 6th, 2018): XGBOD has been implemented in **[Python Outlier Detection (PyOD)](https://github.com/yzhao062/pyod)**, to be released in pyod V0.6.6.
 
 ------------
 
@@ -55,7 +54,11 @@ The experiment code is writen in Python 3 and built on a number of Python packag
 - imblearn==0.0
 - scikit_learn==0.19.1
 
-Batch installation is possible using the supplied "requirements.txt"
+Batch installation is possible using the supplied "requirements.txt":
+
+````cmd
+pip install -r requirements.txt
+````
 
 ------------
 
