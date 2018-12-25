@@ -1,5 +1,6 @@
 # XGBOD (Extreme Boosting Based Outlier Detection)
-### Supplementary materials: datasets, source code, and sample outputs.
+
+------------
 
 Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *International Joint Conference on Neural Networks (IJCNN)*, IEEE, 2018.
 
@@ -17,6 +18,8 @@ Please cite the paper as:
 [PDF](https://www.cs.toronto.edu/~yuezhao/s/edited_XGBOD.pdf) | 
 [Presentation Slides](https://www.cs.toronto.edu/~yuezhao/s/IJCNN2018-XGBOD-56x7.pdf) |
 [IEEE Explore](https://ieeexplore.ieee.org/document/8489605)
+[API Documentation](https://pyod.readthedocs.io/en/latest/pyod.models.html#module-pyod.models.xgbod) | 
+[Example with PyOD](https://github.com/yzhao062/pyod/blob/master/examples/xgbod_example.py) 
 
 
 **Update** (Dec 25th, 2018): XGBOD has been officially released in **[Python Outlier Detection (PyOD)](https://github.com/yzhao062/pyod)** V0.6.6.
@@ -109,8 +112,8 @@ X_train_new_accu, X_train_all_accu = accurate_select(X, X_train_new_orig, featur
 X_train_new_bal, X_train_all_bal = balance_select(X, X_train_new_orig, roc_list, p)
 ```
 
-Finally, various classification methods are applied to the datasets.
-Sample outputs are provided below:
+Finally, various classification methods are applied to the datasets. Sample outputs are provided below:
+
 ![Sample Outputs on Arrhythmia](https://github.com/yzhao062/XGBOD/blob/master/figs/sample_outputs.png "Sample Outputs on Arrhythmia")
 ------------
 ## Figures
