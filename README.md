@@ -1,11 +1,7 @@
 # XGBOD (Extreme Boosting Based Outlier Detection)
-### Supplementary materials: datasets, demo source codes and sample outputs.
+### Supplementary materials: datasets, source code, and sample outputs.
 
 Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *International Joint Conference on Neural Networks (IJCNN)*, IEEE, 2018.
-
-[PDF](https://www.cs.toronto.edu/~yuezhao/s/edited_XGBOD.pdf) | 
-[Presentation Slides](https://www.cs.toronto.edu/~yuezhao/s/IJCNN2018-XGBOD-56x7.pdf) |
-[IEEE Explore](https://ieeexplore.ieee.org/document/8489605)
 
 Please cite the paper as:
 
@@ -18,17 +14,25 @@ Please cite the paper as:
       organization={IEEE}
     }
 
-**Update** (Dec 6th, 2018): XGBOD has been included as part of **[Python Outlier Detection (PyOD)](https://github.com/yzhao062/pyod)**, 
+[PDF](https://www.cs.toronto.edu/~yuezhao/s/edited_XGBOD.pdf) | 
+[Presentation Slides](https://www.cs.toronto.edu/~yuezhao/s/IJCNN2018-XGBOD-56x7.pdf) |
+[IEEE Explore](https://ieeexplore.ieee.org/document/8489605)
+
+
+**Update** (Dec 25th, 2018): XGBOD has been officially released in **[Python Outlier Detection (PyOD)](https://github.com/yzhao062/pyod)** V0.6.6.
+
+**Update** (Dec 6th, 2018): XGBOD has been implemented in **[Python Outlier Detection (PyOD)](https://github.com/yzhao062/pyod)**, 
 pending to be released in pyod V0.6.6.
 
 ------------
 
 Additional notes:
 1. Two versions of codes are provided:
-   1. **Demo purpose version** (xgbod_demo.py) is refactored for fast execution and reproduction as a proof of concept. The key difference from the full version is TOS are built in once for both training and test data. It could be regarded as a static unsupervised engineering. However, it is noted users should not expose and use the testing data while building TOS in practice. 
+   1. **Demo version** (xgbod_demo.py) is refactored for fast execution and reproduction as a proof of concept. The key difference from the full version is TOS are built in once for both training and test data. It could be regarded as a static unsupervised engineering. However, it is noted users should not expose and use the testing data while building TOS in practice. 
    2. **Production version** ([Python Outlier Detection (PyOD)](https://github.com/yzhao062/pyod)) is released with full optimization and testing as a framework. The purpose of this version is to be used in real applications, which should require fewer dependencies and faster execution.
 3. It is understood that there are **small variations** in the results due to the random process, such as xgboost and Random TOS Selection. Again, running demo code would only give you similar results but not the exact results. Additionally, specific setups are slightly different for distinct datasets, which we have not published yet.
 4. While running *L1_Comb* and *L2_Comb*, EasyEnsemble is used to construct balanced bags. It is noted the demo code uses 10 bags instead of 50, for executing efficiently. Despite, increasing to 50 bags would not change the result too much but just bring better stablity. You are welcomed to change "BalancedBaggingClassifier" parameter for using 50 bags. However, it is very slow and this is also one of the reasons why we propose XGBOD -- it is much more efficient:)
+
 ------------
 
 ##  Introduction
@@ -56,17 +60,17 @@ Batch installation is possible using the supplied "requirements.txt"
 ## Datasets
 Seven datasets are used (see dataset folder):
 
-|  Datasets | Dimension  | Sample Size  | Number of Outliers  |
-| --------- | -----------| ------------ | ------------------- |
-| Arrhythmia  | 351    | 274  | 126 (36%)    |
-|  Letter     | 1600   | 32   | 100 (6.25%)  |
-|  Cardio     | 1831   | 21   | 176 (9.6%)   |
-|  Speech     | 3686   | 600  | 61(1.65%)    |
-|  Satellite  | 6435   | 36   | 2036 (31.64%)|
-|  Mnist      | 7603   | 100  | 700 (9.21%)  |
-|  Mammography| 11863  | 6    | 260 (2.32%)  |
+| Datasets     | Dimension  | Sample Size  | Number of Outliers  |
+| ------------ | -----------| ------------ | ------------------- |
+| Arrhythmia   | 351        | 274          | 126 (36%)           |
+| Letter       | 1600       | 32           | 100 (6.25%)         |
+| Cardio       | 1831       | 21           | 176 (9.6%)          |
+| Speech       | 3686       | 600          | 61(1.65%)           |
+| Satellite    | 6435       | 36           | 2036 (31.64%)       |
+| Mnist        | 7603       | 100          | 700 (9.21%)         |
+| Mammography  | 11863      | 6            | 260 (2.32%)         |
 
-All datasets are accesible from http://odds.cs.stonybrook.edu/. Citation Suggestion for the datasets please refer to: 
+All datasets are accessible at http://odds.cs.stonybrook.edu/. Citation Suggestion for the datasets please refer to: 
 > Shebuti Rayana (2016).  ODDS Library [http://odds.cs.stonybrook.edu]. Stony Brook, NY: Stony Brook University, Department of Computer Science.
 
 ------------
@@ -86,11 +90,14 @@ The first part of the code read in the datasets using Scipy. Five public outlier
 **Please be noted that you may include more TOS**
 
 Taking KNN as an example, codes are as below:
+
 ```python
 # Generate TOS using KNN based algorithms
 feature_list, roc_knn, prc_n_knn, result_knn = get_TOS_knn(X_norm, y, k_range, feature_list)
 ```
-Then three TOS selection methods are used to select *p*  TOS:
+
+Then three TOS selection methods are used to select *p* TOS:
+
 ```python
 
 p = 10  # number of selected TOS
@@ -101,6 +108,7 @@ X_train_new_accu, X_train_all_accu = accurate_select(X, X_train_new_orig, featur
 # balance selection
 X_train_new_bal, X_train_all_bal = balance_select(X, X_train_new_orig, roc_list, p)
 ```
+
 Finally, various classification methods are applied to the datasets.
 Sample outputs are provided below:
 ![Sample Outputs on Arrhythmia](https://github.com/yzhao062/XGBOD/blob/master/figs/sample_outputs.png "Sample Outputs on Arrhythmia")
@@ -108,5 +116,5 @@ Sample outputs are provided below:
 ## Figures
 
 Running **plots.py** would generate the figures for various TOS selection algorithms:
-![Sample Outputs on Arrhythmia2](https://github.com/yzhao062/XGBOD/blob/master/figs/results.png "Sample Outputs on Arrhythmia")
+![The effect of number of TOS and selection method](https://github.com/yzhao062/XGBOD/blob/master/figs/results.png "The effect of number of TOS and selection method")
 
