@@ -2,12 +2,12 @@
 
 ------------
 
-Y. Zhao and M.K. Hryniewicki, "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *International Joint Conference on Neural Networks (IJCNN)*, IEEE, 2018.
+Zhao, Y. and Hryniewicki, M.K., "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning," *International Joint Conference on Neural Networks (IJCNN)*, IEEE, 2018.
 
 Please cite the paper as:
 
     @inproceedings{zhao2018xgbod,
-      title={Xgbod: improving supervised outlier detection with unsupervised representation learning},
+      title={XGBOD: improving supervised outlier detection with unsupervised representation learning},
       author={Zhao, Yue and Hryniewicki, Maciej K},
       booktitle={2018 International Joint Conference on Neural Networks (IJCNN)},
       pages={1--8},
