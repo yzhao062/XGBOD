@@ -15,8 +15,7 @@ Please cite the paper as:
       organization={IEEE}
     }
 
-[PDF](https://www.cs.toronto.edu/~yuezhao/s/edited_XGBOD.pdf) | 
-[Presentation Slides](https://www.cs.toronto.edu/~yuezhao/s/IJCNN2018-XGBOD-56x7.pdf) |
+[PDF](https://www.andrew.cmu.edu/user/yuezhao2/papers/18-ijcnn-xgbod.pdf) | 
 [IEEE Explore](https://ieeexplore.ieee.org/document/8489605) | 
 [API Documentation](https://pyod.readthedocs.io/en/latest/pyod.models.html#module-pyod.models.xgbod) | 
 [Example with PyOD](https://github.com/yzhao062/pyod/blob/master/examples/xgbod_example.py) 
