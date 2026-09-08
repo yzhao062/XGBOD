@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper in preferred-citation below."
+title: "XGBOD"
+abstract: "Improving supervised outlier detection with unsupervised representation learning."
+type: software
+authors:
+  - family-names: "Zhao"
+    given-names: "Yue"
+    orcid: "https://orcid.org/0000-0003-3401-4921"
+  - family-names: "Hryniewicki"
+    given-names: "Maciej K."
+repository-code: "https://github.com/yzhao062/XGBOD"
+keywords:
+  - "anomaly-detection"
+  - "outlier-detection"
+  - "outlier-ensembles"
+  - "semi-supervised"
+preferred-citation:
+  type: conference-paper
+  title: "XGBOD: Improving Supervised Outlier Detection with Unsupervised Representation Learning"
+  authors:
+    - family-names: "Zhao"
+      given-names: "Yue"
+      orcid: "https://orcid.org/0000-0003-3401-4921"
+    - family-names: "Hryniewicki"
+      given-names: "Maciej K."
+  collection-title: "2018 International Joint Conference on Neural Networks (IJCNN)"
+  year: 2018
+  start: 1
+  end: 8
+  url: "https://ieeexplore.ieee.org/document/8489605"
